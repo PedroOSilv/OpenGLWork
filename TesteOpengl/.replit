@@ -1,0 +1,6 @@
+entrypoint = "src/main.c"
+compile = "make compile"
+run = "./bin/main"
+
+[languages.c]
+pattern = "**/*.{c,h}"
