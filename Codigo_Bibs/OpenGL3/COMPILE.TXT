@@ -1,5 +1,0 @@
-// Compile command:
-// Linux
-// g++ hello.cpp -o app -std=c++11 -Wall -lGL -lGLU -lglut -lGLEW -lglfw -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
-// Windows
-// g++ --std=c++11 hello.cpp -o app -lglew32 -lfreeglut -lglu32 -lopengl32

@@ -1,1 +1,0 @@
-https://github.com/jvm-graphics-labs/modern-jogl-examples

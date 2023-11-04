@@ -1,3 +1,0 @@
-Linux: g++ hello.cpp -o app -lglut -lGLU -lGL
-
-Windows: g++ hello.cpp -o app -lopengl32 -lglu32 -lfreeglut
