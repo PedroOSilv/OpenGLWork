@@ -18,19 +18,21 @@ using namespace std;
 #include"Cube.cpp"
 #include"Pyramid.cpp"
 #include"Octagon.cpp"
+#include"Light.cpp"
 
 GLFWwindow* window;
 
 const int WINDOW_WIDTH = 1280;
 const int WINDOW_HEIGHT = 720;
 const unsigned int TOTAL_CUBES = 1;
-const unsigned int TOTAL_PYRAMIDS = 1;
-const unsigned int TOTAL_OCTAGONS = 1;
+const unsigned int TOTAL_PYRAMIDS = 0;
+const unsigned int TOTAL_OCTAGONS = 0;
 
 Camera camera;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+
 
 void initOpenGL()
 {
@@ -78,13 +80,22 @@ int main()
 {
     initOpenGL();
 
+    glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 5.0f, 0.0f);
+	glm::mat4 lightModel = glm::mat4(1.0f);
+	lightModel = glm::translate(lightModel, lightPos);
+
+    //light Shader
+    Shader lightShader("../Shaders/Light.vs", "../Shaders/Light.fs");
+    lightShader.CreateShaders();
+
     //Model Matrix  with Frequent Changes
-    Shader mainShader("../Shaders/Main.vert", "../Shaders/Main.frag");
+    Shader mainShader("../Shaders/Main.vs", "../Shaders/Main.fs");
     mainShader.CreateShaders();
 
     //Model Matrix  with Minor Changes
-    Shader minorShader("../Shaders/Minor.vert", "../Shaders/Main.frag");
-    minorShader.CreateShaders();
+    // Shader minorShader("../Shaders/Minor.vs", "../Shaders/Main.fs");
+    // minorShader.CreateShaders();
 
     Cube cube(TOTAL_CUBES);
     cube.Create();
@@ -103,27 +114,37 @@ int main()
    
     mainShader.Bind();
     mainShader.SendUniformData("projection", projection);
+    mainShader.SendUniformLight("lightColor",lightColor);
+    mainShader.SendUniformLightPos("lightPos",lightPos);
     mainShader.Unbind();
 
-    minorShader.Bind();
-    minorShader.SendUniformData("projection", projection);
-    minorShader.SendUniformData("model", glm::mat4(1.f));
-    minorShader.Unbind();
+    lightShader.Bind();
+    lightShader.SendUniformData("model", lightModel);
+    lightShader.SendUniformLight("lightColor",lightColor);
+    lightShader.Unbind();
+
+    // minorShader.Bind();
+    // minorShader.SendUniformData("projection", projection);
+    // minorShader.SendUniformData("model", glm::mat4(1.f));
+    // minorShader.Unbind();
+
 
     // Initialize Position Matrix
     glm::mat4* cubesPosMatrix = new glm::mat4[TOTAL_CUBES];
     glm::mat4* pyramidsPosMatrix = new glm::mat4[TOTAL_PYRAMIDS];
     glm::mat4* octagonsPosMatrix = new glm::mat4[TOTAL_OCTAGONS];
-    
+
     // Generate Objects Positions
     {
         // Cubes Positions
         for (int i = 0; i < (int)TOTAL_CUBES; i++)
         {
-            float x = genRandom(-200.f, 200.f);
-            float y = genRandom(3.f, 10.f);
-            float z = genRandom(-200.f, 200.f);
-            cubesPosMatrix[i] = glm::translate(glm::vec3(x, y, z));
+            // float x = genRandom(-200.f, 200.f);
+            // float y = genRandom(3.f, 10.f);
+            // float z = genRandom(-200.f, 200.f);
+
+            //actually not randonly generated
+            cubesPosMatrix[i] = glm::translate(glm::vec3(0, 0, -5));
         }
 
         //Pyramids Positions
@@ -188,6 +209,7 @@ int main()
     glm::mat4* pyramidModels = new glm::mat4[TOTAL_PYRAMIDS];
     glm::mat4* octagonModels = new glm::mat4[TOTAL_OCTAGONS];
 
+
     unsigned int cubeModelVBO = cube.GetModelVBO();
     unsigned int pyramidModelVBO = pyramid.GetModelVBO();
     unsigned int octagonModelVBO = octagon.GetModelVBO();
@@ -198,20 +220,31 @@ int main()
     {
 
         float currentTime = (float)glfwGetTime();
-        float dt = currentTime - startTime;
+        float dt = (currentTime - startTime)/2;
 
         glm::mat4 viewMatrix = camera.ativar();
 
+        mainShader.SendUniformLightPos("camPos", camera._position);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        //Light Render
+        {
+
+            lightShader.Bind();
+            lightShader.SendUniformData("camMatrix", viewMatrix);
+            lightShader.Unbind();
+        }
 
         //Terrain Render
         {
 
-            minorShader.Bind();
-            minorShader.SendUniformData("view", viewMatrix);
-            terrain.Draw();
-            minorShader.Unbind();
+            // minorShader.Bind();
+            // minorShader.SendUniformData("view", viewMatrix);
+            // terrain.Draw();
+            // minorShader.Unbind();
         }
+        
 
         mainShader.Bind();
         {
@@ -264,6 +297,8 @@ int main()
 
                 octagon.Draw();
             }
+
+
 
         }
 

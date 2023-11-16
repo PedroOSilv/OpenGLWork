@@ -3,7 +3,6 @@
 
 class Camera
 {
-	glm::vec3 _position;
 	glm::vec3 _viewDir;
 	glm::vec3 _left;
 
@@ -18,6 +17,8 @@ class Camera
 
 public:
 	Camera();
+
+	glm::vec3 _position;
 
 	void mouseUpdate(const glm::vec2& currentPos);
 
