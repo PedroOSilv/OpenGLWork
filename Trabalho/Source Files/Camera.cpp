@@ -23,7 +23,7 @@ void Camera::mouseUpdate(const glm::vec2& currentPos)
 
 	glm::vec2 delta = currentPos - _oldMousePos;
 	
-	float threshold = 1.5f;
+	float threshold = 2.2f;
 	if (glm::length(delta) > threshold)
 		setMag(delta, threshold);
 	

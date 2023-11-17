@@ -20,6 +20,6 @@ void main()
 	gl_Position =  projection * view * vec4(crntPos, 1.0);
 	colorOut = colorIn;
 
-	Normal = aNormal;
+	Normal = mat3(transpose(inverse(model))) * aNormal;
 }
 

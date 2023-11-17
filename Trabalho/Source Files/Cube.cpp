@@ -116,40 +116,40 @@ void Cube::FillBuffers()
     glm::vec3 normals[] =
     {
         // Front
-        glm::vec3(+0.0f, +0.0f, +1.0f),//0
-        glm::vec3(+0.0f, +0.0f, +1.0f),//1
-        glm::vec3(+0.0f, +0.0f, +1.0f),//2
-        glm::vec3(+0.0f, +0.0f, +1.0f),//3
+        glm::vec3(-0.5f, +0.5f, +1.5f),//0
+        glm::vec3(-0.5f, -0.5f, +1.5f),//1
+        glm::vec3(+0.5f, -0.5f, +1.5f),//2
+        glm::vec3(+0.5f, +0.5f, +1.5f),//3
 
        //Back
-        glm::vec3(+0.0f, +0.0f, -1.0f),//0
-        glm::vec3(+0.0f, +0.0f, -1.0f),//1
-        glm::vec3(+0.0f, +0.0f, -1.0f),//2
-        glm::vec3(+0.0f, +0.0f, -1.0f),//3
+        glm::vec3(+0.5f, +0.5f, -1.5f),//1
+        glm::vec3(+0.5f, -0.5f, -1.5f),//0
+        glm::vec3(-0.5f, -0.5f, -1.5f),//3
+        glm::vec3(-0.5f, +0.5f, -1.5f),//2
 
        //Right
-        glm::vec3(+1.0f, +0.0f, +0.0f),//0
-        glm::vec3(+1.0f, +0.0f, +0.0f),//1
-        glm::vec3(+1.0f, +0.0f, +0.0f),//2
-        glm::vec3(+1.0f, +0.0f, +0.0f),//3
+        glm::vec3(+1.5f, +0.5f, +0.5f),//3
+        glm::vec3(+1.5f, -0.5f, +0.5f),//2 
+        glm::vec3(+1.5f, -0.5f, -0.5f),//5
+        glm::vec3(+1.5f, +0.5f, -0.5f),//4
 
        //Left
-        glm::vec3(-1.0f, +0.0f, +0.0f),//0
-        glm::vec3(-1.0f, +0.0f, +0.0f),//1
-        glm::vec3(-1.0f, +0.0f, +0.0f),//2
-        glm::vec3(-1.0f, +0.0f, +0.0f),//3
+        glm::vec3(-1.5f, +0.5f, -0.5f),//0
+        glm::vec3(-1.5f, -0.5f, -0.5f),//1
+        glm::vec3(-1.5f, -0.5f, +0.5f),//2
+        glm::vec3(-1.5f, +0.5f, +0.5f),//3
 
        //Top
-        glm::vec3(+0.0f, +1.0f, +0.0f),//0
-        glm::vec3(+0.0f, +1.0f, +0.0f),//1
-        glm::vec3(+0.0f, +1.0f, +0.0f),//2
-        glm::vec3(+0.0f, +1.0f, +0.0f),//3
+        glm::vec3(-0.5f, +1.5f, -0.5f),//0
+        glm::vec3(-0.5f, +1.5f, +0.5f),//1
+        glm::vec3(+0.5f, +1.5f, +0.5f),//2
+        glm::vec3(+0.5f, +1.5f, -0.5f),//3
 
        //Bottom
-        glm::vec3(+0.0f, -1.0f, +0.0f),//0
-        glm::vec3(+0.0f, -1.0f, +0.0f),//1
-        glm::vec3(+0.0f, -1.0f, +0.0f),//2
-        glm::vec3(+0.0f, -1.0f, +0.0f),//3
+        glm::vec3(-0.5f, -1.5f, +0.5f),//1
+        glm::vec3(-0.5f, -1.5f, -0.5f),//6
+        glm::vec3(+0.5f, -1.5f, -0.5f),//5
+        glm::vec3(+0.5f, -1.5f, +0.5f),//2
     };
 
 
@@ -191,7 +191,7 @@ void Cube::LinkBuffers()
 
         glBindBuffer(GL_ARRAY_BUFFER, _normalsVBO);
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 3,GL_FLOAT, GL_FALSE,  sizeof(glm::vec3), 0);
+        glVertexAttribPointer(2, 3,GL_FLOAT, GL_FALSE,  3 * sizeof(float), 0);
 
 
         glBindBuffer(GL_ARRAY_BUFFER, _modelVBO);
@@ -208,10 +208,14 @@ void Cube::LinkBuffers()
             glEnableVertexAttribArray(6);
             glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 3));
 
+            glEnableVertexAttribArray(7);
+            glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 4));
+
             glVertexAttribDivisor(3, 1);
             glVertexAttribDivisor(4, 1);
             glVertexAttribDivisor(5, 1);
             glVertexAttribDivisor(6, 1);
+            glVertexAttribDivisor(7, 1);
 
         }
     }

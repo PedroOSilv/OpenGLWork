@@ -63,6 +63,51 @@ void Octagon::FillBuffers()
         points[4],//Yellow 11
 
     };
+
+    glm::vec3 normals[] = 
+    {
+        //Front
+        cross(points[1]-points[0],points[2]-points[0]), //Red 0
+        points[1], //Red 1
+        points[2], //Red 2
+
+        //Right
+        points[0],//Green 3
+        points[2],//Grenn 4
+        points[3],//Green 5
+
+        //Left
+        points[0],//Blue 6
+        points[4],//Blue 7
+        points[1],//Blue 8
+
+        //Back
+        points[0],//Yellow 9
+        points[3],//Yellow 10
+        points[4],//Yellow 11
+
+        //FrontDown
+        points[5], //Red 0
+        points[1], //Red 1
+        points[2], //Red 2
+
+        //RightDown
+        points[5],//Green 3
+        points[2],//Grenn 4
+        points[3],//Green 5
+
+        //LeftDown
+        points[5],//Blue 6
+        points[4],//Blue 7
+        points[1],//Blue 8
+
+        //BackDown
+        points[5],//Yellow 9
+        points[3],//Yellow 10
+        points[4],//Yellow 11
+
+    };
+
     GLubyte colors[] =
     {
         //Front Red

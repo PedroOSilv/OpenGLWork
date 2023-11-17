@@ -81,7 +81,7 @@ int main()
     initOpenGL();
 
     glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.0f, 5.0f, 0.0f);
+	glm::vec3 lightPos = glm::vec3(-3.0f, 3.0f, 0.0f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
 
@@ -93,9 +93,9 @@ int main()
     Shader mainShader("../Shaders/Main.vs", "../Shaders/Main.fs");
     mainShader.CreateShaders();
 
-    //Model Matrix  with Minor Changes
-    // Shader minorShader("../Shaders/Minor.vs", "../Shaders/Main.fs");
-    // minorShader.CreateShaders();
+    //model Matrix  with Minor Changes
+    Shader minorShader("../Shaders/Minor.vs", "../Shaders/Main.fs");
+    minorShader.CreateShaders();
 
     Cube cube(TOTAL_CUBES);
     cube.Create();
@@ -123,10 +123,10 @@ int main()
     lightShader.SendUniformLight("lightColor",lightColor);
     lightShader.Unbind();
 
-    // minorShader.Bind();
-    // minorShader.SendUniformData("projection", projection);
-    // minorShader.SendUniformData("model", glm::mat4(1.f));
-    // minorShader.Unbind();
+    minorShader.Bind();
+    minorShader.SendUniformData("projection", projection);
+    minorShader.SendUniformData("model", glm::mat4(1.f));
+    minorShader.Unbind();
 
 
     // Initialize Position Matrix
@@ -144,7 +144,7 @@ int main()
             // float z = genRandom(-200.f, 200.f);
 
             //actually not randonly generated
-            cubesPosMatrix[i] = glm::translate(glm::vec3(0, 0, -5));
+            cubesPosMatrix[i] = glm::translate(glm::vec3(0, 0, -2));
         }
 
         //Pyramids Positions
@@ -176,10 +176,11 @@ int main()
         //Cube
         for (int i = 0; i < (int)TOTAL_CUBES; i++)
         {
-            float x = genRandom(-2.75f, -1.75f);
-            float y = genRandom(1.f, 3.f);
-            float z = genRandom(+1.f, 2.75f);
-            cubeAngSpeed[i] = glm::vec3(x, y, z);
+            // float x = genRandom(-2.75f, -1.75f);
+            // float y = genRandom(1.f, 3.f);
+            // float z = genRandom(+1.f, 2.75f);
+            //not rotating
+            cubeAngSpeed[i] = glm::vec3(0, 1, 0);
         }
 
         //Pyramid
@@ -224,8 +225,6 @@ int main()
 
         glm::mat4 viewMatrix = camera.ativar();
 
-        mainShader.SendUniformLightPos("camPos", camera._position);
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //Light Render
@@ -239,16 +238,17 @@ int main()
         //Terrain Render
         {
 
-            // minorShader.Bind();
-            // minorShader.SendUniformData("view", viewMatrix);
-            // terrain.Draw();
-            // minorShader.Unbind();
+            minorShader.Bind();
+            minorShader.SendUniformData("view", viewMatrix);
+            terrain.Draw();
+            minorShader.Unbind();
         }
         
 
         mainShader.Bind();
         {
             mainShader.SendUniformData("view", viewMatrix);
+            mainShader.SendUniformLightPos("camPos", camera._position);
             //Cube 
             {
                 for (unsigned int i = 0; i < (int)TOTAL_CUBES; i++)
