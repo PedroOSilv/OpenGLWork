@@ -16,9 +16,9 @@ class Camera
 	void setMag(glm::vec2& v, float val);
 
 public:
+	glm::vec3 _position;
 	Camera();
 
-	glm::vec3 _position;
 
 	void mouseUpdate(const glm::vec2& currentPos);
 

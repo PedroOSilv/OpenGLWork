@@ -25,8 +25,8 @@ protected:
 	unsigned int _EBO;
 	unsigned int _positionVBO;
 	unsigned int _colorVBO;
-	unsigned int _modelVBO;
 	unsigned int _normalsVBO;
+	unsigned int _modelVBO;
 
 	unsigned int _total;
 	

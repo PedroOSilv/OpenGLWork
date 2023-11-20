@@ -25,8 +25,8 @@ GLFWwindow* window;
 const int WINDOW_WIDTH = 1280;
 const int WINDOW_HEIGHT = 720;
 const unsigned int TOTAL_CUBES = 1;
-const unsigned int TOTAL_PYRAMIDS = 0;
-const unsigned int TOTAL_OCTAGONS = 0;
+const unsigned int TOTAL_PYRAMIDS = 1;
+const unsigned int TOTAL_OCTAGONS = 1;
 
 Camera camera;
 
@@ -81,7 +81,7 @@ int main()
     initOpenGL();
 
     glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(-3.0f, 3.0f, 0.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 4.0f, 2.0f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
 
@@ -103,7 +103,7 @@ int main()
     Pyramid pyramid(TOTAL_PYRAMIDS);
     pyramid.Create();
 
-    Octagon octagon(TOTAL_PYRAMIDS);
+    Octagon octagon(TOTAL_OCTAGONS);
     octagon.Create();
 
     Terrain terrain(250.f);
@@ -150,19 +150,19 @@ int main()
         //Pyramids Positions
         for (int i = 0; i < (int)TOTAL_PYRAMIDS; i++)
         {
-            float x = genRandom(-200.f, 200.f);
-            float y = genRandom(3.f, 15.f);
-            float z = genRandom(-200.f, 200.f);
-            pyramidsPosMatrix[i] = glm::translate(glm::vec3(x, y, z));
+            // float x = genRandom(-200.f, 200.f);
+            // float y = genRandom(3.f, 15.f);
+            // float z = genRandom(-200.f, 200.f);
+            pyramidsPosMatrix[i] = glm::translate(glm::vec3(3, 0, -2));
         }
 
         //Octagons Positions
         for (int i = 0; i < (int)TOTAL_OCTAGONS; i++)
         {
-            float x = genRandom(-200.f, 200.f);
-            float y = genRandom(3.f, 15.f);
-            float z = genRandom(-200.f, 200.f);
-            octagonsPosMatrix[i] = glm::translate(glm::vec3(x, y, z));
+            // float x = genRandom(-200.f, 200.f);
+            // float y = genRandom(3.f, 15.f);
+            // float z = genRandom(-200.f, 200.f);
+            octagonsPosMatrix[i] = glm::translate(glm::vec3(-3, 0, -2));
         }
     }
 
@@ -180,27 +180,27 @@ int main()
             // float y = genRandom(1.f, 3.f);
             // float z = genRandom(+1.f, 2.75f);
             //not rotating
-            cubeAngSpeed[i] = glm::vec3(0, 1, 0);
+            cubeAngSpeed[i] = glm::vec3(0, 1, 0.5);
         }
 
         //Pyramid
         for (int i = 0; i < (int)TOTAL_PYRAMIDS; i++)
         {
-            float x = genRandom(+1.f, 2.75f);
-            float y = genRandom(1.5f, 3.25f);
-            float z = genRandom(-2.5f, -1.5f);
+            // float x = genRandom(+1.f, 2.75f);
+            // float y = genRandom(1.5f, 3.25f);
+            // float z = genRandom(-2.5f, -1.5f);
 
-            pyramidAngSpeed[i] = glm::vec3(x, y, z);
+            pyramidAngSpeed[i] = glm::vec3(0, -1, 0);
         }
 
         //Octagons
         for (int i = 0; i < (int)TOTAL_OCTAGONS; i++)
         {
-            float x = genRandom(+1.f, 2.75f);
-            float y = genRandom(1.5f, 3.25f);
-            float z = genRandom(-2.5f, -1.5f);
+            // float x = genRandom(+1.f, 2.75f);
+            // float y = genRandom(1.5f, 3.25f);
+            // float z = genRandom(-2.5f, -1.5f);
 
-            octagonAngSpeed[i] = glm::vec3(x, y, z);
+            octagonAngSpeed[i] = glm::vec3(-0.5, 1, 0);
         }
     }
 
@@ -236,19 +236,20 @@ int main()
         }
 
         //Terrain Render
-        {
+        // {
 
-            minorShader.Bind();
-            minorShader.SendUniformData("view", viewMatrix);
-            terrain.Draw();
-            minorShader.Unbind();
-        }
+        //     minorShader.Bind();
+        //     minorShader.SendUniformData("view", viewMatrix);
+        //     terrain.Draw();
+        //     minorShader.Unbind();
+        // }
         
 
         mainShader.Bind();
         {
             mainShader.SendUniformData("view", viewMatrix);
             mainShader.SendUniformLightPos("camPos", camera._position);
+
             //Cube 
             {
                 for (unsigned int i = 0; i < (int)TOTAL_CUBES; i++)
@@ -282,7 +283,7 @@ int main()
                 pyramid.Draw();
             }
 
-            //Pyramid 
+            //Octagon 
             {
                 for (unsigned int i = 0; i < (int)TOTAL_OCTAGONS; i++)
                 {
@@ -297,8 +298,6 @@ int main()
 
                 octagon.Draw();
             }
-
-
 
         }
 
