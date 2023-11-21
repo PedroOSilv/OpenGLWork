@@ -3,6 +3,19 @@
 
 class Camera
 {
+public:
+	Camera();
+	glm::vec3 _position;
+
+	void mouseUpdate(const glm::vec2& currentPos);
+
+	glm::mat4 ativar();
+	void moveForward();
+	void moveBack();
+	void moveLeft();
+	void moveRight();
+
+private:
 	glm::vec3 _viewDir;
 	glm::vec3 _left;
 
@@ -14,17 +27,4 @@ class Camera
 	bool _isMouseActivated;
 	
 	void setMag(glm::vec2& v, float val);
-
-public:
-	glm::vec3 _position;
-	Camera();
-
-
-	void mouseUpdate(const glm::vec2& currentPos);
-
-	glm::mat4 ativar();
-	void moveForward();
-	void moveBack();
-	void moveLeft();
-	void moveRight();
 };
