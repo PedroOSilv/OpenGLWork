@@ -14,7 +14,7 @@ out vec4 fragColor;
 void main()
 {   
     // ambient lighting
-	float ambient = 0.2f;
+	float ambient = 0.1f;
 
 	// diffuse lighting
 	vec3 normal = normalize(Normal);
@@ -22,7 +22,7 @@ void main()
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
 	// specular lighting
-	float specularLight = 1.0f;
+	float specularLight = 50.0f;
 	vec3  viewDirection = normalize(camPos - crntPos);
 	vec3  reflectionDirection = reflect(-lightDirection, normal);
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 30);

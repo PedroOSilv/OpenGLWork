@@ -12,8 +12,6 @@ out vec4 fragColor;
 
 void main()
 {   
-    // ambient lighting
-	float ambient = 0.1f;
 
 	// diffuse lighting
 	vec3 normal = normalize(Normal);
@@ -21,5 +19,5 @@ void main()
 	float diffuse = max(dot(normal, lightDirection), 0.0f);
 
 	// only uses the ambient and diffuse coeficient
-	fragColor =  vec4(colorOut,1.0f) * lightColor * ( ambient + diffuse)  ;
+	fragColor =  vec4(colorOut,1.0f) * lightColor * ( diffuse)  ;
 }

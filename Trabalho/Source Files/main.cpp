@@ -40,7 +40,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void initOpenGL()
 {   
     std::cout << "Bem vindo!:" << std::endl;
-    std::cout << "Insira 1 para luz ambiente, 2 para difusa e 3 para escpecular: ";
+    std::cout << "Insira 1 para luz ambiente, 2 para difusa, 3 para specular e 4 para phong: ";
     std::cin >> option;
     // std::cout << option <<std::endl;
 
@@ -111,9 +111,12 @@ int main()
         }else if(option == 3){
             mainShader = new Shader("../Shaders/Main.vs", "../Shaders/Specular.fs");
             mainShader->CreateShaders();
+        }else if(option == 4){
+            mainShader = new Shader("../Shaders/Main.vs", "../Shaders/Phong.fs");
+            mainShader->CreateShaders();
         }else {
             std::cout << "Opcao invalida!" << std::endl;
-            std::cout << "Insira 1 para luz ambiente, 2 para difusa e 3 para escpecular: ";
+            std::cout << "Insira 1 para luz ambiente, 2 para difusa, 3 para specular e 4 para phong: ";
             std::cin >> option;
         }   
     // }
@@ -145,6 +148,12 @@ int main()
             mainShader->SendUniformLight("lightColor",lightColor);
             mainShader->Unbind();
     }else if(option == 3){
+            mainShader->Bind();
+            mainShader->SendUniformData("projection", projection);
+            mainShader->SendUniformLight("lightColor",lightColor);
+            mainShader->SendUniformLightPos("lightPos",lightPos);
+            mainShader->Unbind();
+    }else if(option == 4){
             mainShader->Bind();
             mainShader->SendUniformData("projection", projection);
             mainShader->SendUniformLight("lightColor",lightColor);
@@ -259,6 +268,8 @@ int main()
             mainShader->SendUniformData("view", viewMatrix);
 
             if(option == 3){
+                mainShader->SendUniformLightPos("camPos", camera._position);
+            }else if(option == 4){
                 mainShader->SendUniformLightPos("camPos", camera._position);
             }
 
