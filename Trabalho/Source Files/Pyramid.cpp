@@ -8,6 +8,14 @@ Pyramid::Pyramid(unsigned int totalPyramids)
 }
 
 
+glm::vec3 calculateNormal(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3) {
+    glm::vec3 edge1 = p2 - p1;
+    glm::vec3 edge2 = p3 - p1;
+    glm::vec3 normal = glm::normalize(glm::cross(edge1, edge2));
+    normal = p1 + normal;
+    return normal;
+}
+
 
 void Pyramid::FillBuffers()
 {
@@ -78,6 +86,35 @@ void Pyramid::FillBuffers()
         0, 255, 255 
     };
 
+    glm::vec3 normals[] = {
+        //Front
+        calculateNormal(points[0],points[1],points[2]),// points[0],
+        calculateNormal(points[1],points[2],points[0]),// points     [1],
+        calculateNormal(points[2],points[0],points[1]),// points[2],
+
+        //Right
+        calculateNormal(points[0],points[2],points[3]),// points[0],
+        calculateNormal(points[2],points[3],points[0]),// points     [2],
+        calculateNormal(points[3],points[0],points[2]),// points[3],
+
+        //Left
+        calculateNormal(points[0],points[4],points[1]),// points[0],
+        calculateNormal(points[4],points[1],points[0]),// points     [4],
+        calculateNormal(points[1],points[0],points[4]),// points[1],
+
+        //Back
+        calculateNormal(points[0],points[3],points[4]),// points[0],
+        calculateNormal(points[3],points[4],points[0]),// points     [3],
+        calculateNormal(points[4],points[0],points[3]),// points[4],
+
+        //Bottom
+        calculateNormal(points[1],points[4],points[2]),//points[1]         points[4]
+        calculateNormal(points[4],points[3],points[1]),//           
+        calculateNormal(points[3],points[2],points[4]),//           
+        calculateNormal(points[2],points[1],points[3]),//points[2]         points[3]
+
+    };
+
     unsigned int indices[] =
     {
         // Front 
@@ -109,6 +146,10 @@ void Pyramid::FillBuffers()
     glBindBuffer(GL_ARRAY_BUFFER, _colorVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
+    // Fill the normals
+    glBindBuffer(GL_ARRAY_BUFFER, _normalsVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW); 
+
     // Create empty model Buffer
     glBindBuffer(GL_ARRAY_BUFFER, _modelVBO);
     glBufferData(GL_ARRAY_BUFFER, _total * sizeof(glm::mat4), 0, GL_DYNAMIC_DRAW);
@@ -129,25 +170,33 @@ void Pyramid::LinkBuffers()
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, GL_TRUE, 3 * sizeof(GLubyte), 0);
 
+        glBindBuffer(GL_ARRAY_BUFFER, _normalsVBO);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3,GL_FLOAT, GL_FALSE,  3 * sizeof(float), 0);
+
 
         glBindBuffer(GL_ARRAY_BUFFER, _modelVBO);
         {
-            glEnableVertexAttribArray(2);
-            glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 0));
-
             glEnableVertexAttribArray(3);
-            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 1));
+            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 0));
 
             glEnableVertexAttribArray(4);
-            glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 2));
+            glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 1));
 
             glEnableVertexAttribArray(5);
-            glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 3));
+            glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 2));
 
-            glVertexAttribDivisor(2, 1);
+            glEnableVertexAttribArray(6);
+            glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 3));
+
+            glEnableVertexAttribArray(7);
+            glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 4));
+
             glVertexAttribDivisor(3, 1);
             glVertexAttribDivisor(4, 1);
             glVertexAttribDivisor(5, 1);
+            glVertexAttribDivisor(6, 1);
+            glVertexAttribDivisor(7, 1);
 
         }
     }

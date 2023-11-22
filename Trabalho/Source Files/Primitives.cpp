@@ -6,7 +6,7 @@
 
 Primitive::Primitive() :
     _VAO(0), _EBO(0),
-    _positionVBO(0), _colorVBO(0),
+    _positionVBO(0), _colorVBO(0), _normalsVBO(0),
     _modelVBO(0), _total(1),
     _position(0.f), _model(1.f)
 {
@@ -17,6 +17,7 @@ Primitive::~Primitive()
     glDeleteBuffers(1, &_positionVBO);
     glDeleteBuffers(1, &_colorVBO);
     glDeleteBuffers(1, &_modelVBO);
+    glDeleteBuffers(1, &_normalsVBO);
     glDeleteBuffers(1, &_EBO);
     glDeleteVertexArrays(1, &_VAO);
 }
@@ -34,6 +35,7 @@ void Primitive::CreateBuffers()
     glGenBuffers(1, &_EBO);
     glGenBuffers(1, &_positionVBO);
     glGenBuffers(1, &_colorVBO);
+    glGenBuffers(1, &_normalsVBO);
     glGenBuffers(1, &_modelVBO);
 }
 

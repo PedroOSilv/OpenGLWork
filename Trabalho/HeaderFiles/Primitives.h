@@ -25,6 +25,7 @@ protected:
 	unsigned int _EBO;
 	unsigned int _positionVBO;
 	unsigned int _colorVBO;
+	unsigned int _normalsVBO;
 	unsigned int _modelVBO;
 
 	unsigned int _total;
@@ -41,6 +42,17 @@ protected:
 
 };
 
+class Light:public Primitive
+{
+public: 
+	Light(unsigned int totalCubes);
+	void Draw();
+
+private:
+	void FillBuffers();
+	void LinkBuffers();
+
+};
 
 class Cube:public Primitive
 {

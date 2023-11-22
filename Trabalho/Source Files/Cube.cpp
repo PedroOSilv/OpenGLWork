@@ -113,6 +113,45 @@ void Cube::FillBuffers()
         20, 21, 22, 20, 22, 23 // Bottom 
     };
 
+    glm::vec3 normals[] =
+    {
+        // Front
+        glm::vec3(-0.5f, +0.5f, +1.5f),//0
+        glm::vec3(-0.5f, -0.5f, +1.5f),//1
+        glm::vec3(+0.5f, -0.5f, +1.5f),//2
+        glm::vec3(+0.5f, +0.5f, +1.5f),//3
+
+       //Back
+        glm::vec3(+0.5f, +0.5f, -1.5f),//1
+        glm::vec3(+0.5f, -0.5f, -1.5f),//0
+        glm::vec3(-0.5f, -0.5f, -1.5f),//3
+        glm::vec3(-0.5f, +0.5f, -1.5f),//2
+
+       //Right
+        glm::vec3(+1.5f, +0.5f, +0.5f),//3
+        glm::vec3(+1.5f, -0.5f, +0.5f),//2 
+        glm::vec3(+1.5f, -0.5f, -0.5f),//5
+        glm::vec3(+1.5f, +0.5f, -0.5f),//4
+
+       //Left
+        glm::vec3(-1.5f, +0.5f, -0.5f),//0
+        glm::vec3(-1.5f, -0.5f, -0.5f),//1
+        glm::vec3(-1.5f, -0.5f, +0.5f),//2
+        glm::vec3(-1.5f, +0.5f, +0.5f),//3
+
+       //Top
+        glm::vec3(-0.5f, +1.5f, -0.5f),//0
+        glm::vec3(-0.5f, +1.5f, +0.5f),//1
+        glm::vec3(+0.5f, +1.5f, +0.5f),//2
+        glm::vec3(+0.5f, +1.5f, -0.5f),//3
+
+       //Bottom
+        glm::vec3(-0.5f, -1.5f, +0.5f),//1
+        glm::vec3(-0.5f, -1.5f, -0.5f),//6
+        glm::vec3(+0.5f, -1.5f, -0.5f),//5
+        glm::vec3(+0.5f, -1.5f, +0.5f),//2
+    };
+
 
     //Fill with indices
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
@@ -125,6 +164,10 @@ void Cube::FillBuffers()
     // Fill with colors
     glBindBuffer(GL_ARRAY_BUFFER, _colorVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW); 
+
+    // Fill the normals
+    glBindBuffer(GL_ARRAY_BUFFER, _normalsVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW); 
     
     // Create empty model Buffer
     glBindBuffer(GL_ARRAY_BUFFER, _modelVBO);
@@ -146,25 +189,33 @@ void Cube::LinkBuffers()
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, GL_TRUE, 3 * sizeof(GLubyte), 0);
 
+        glBindBuffer(GL_ARRAY_BUFFER, _normalsVBO);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3,GL_FLOAT, GL_FALSE,  3 * sizeof(float), 0);
+
 
         glBindBuffer(GL_ARRAY_BUFFER, _modelVBO);
         {
-            glEnableVertexAttribArray(2);
-            glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 0));
-
             glEnableVertexAttribArray(3);
-            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 1));
+            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 0));
 
             glEnableVertexAttribArray(4);
-            glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 2));
+            glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 1));
 
             glEnableVertexAttribArray(5);
-            glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 3));
+            glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 2));
 
-            glVertexAttribDivisor(2, 1);
+            glEnableVertexAttribArray(6);
+            glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 3));
+
+            glEnableVertexAttribArray(7);
+            glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * 4));
+
             glVertexAttribDivisor(3, 1);
             glVertexAttribDivisor(4, 1);
             glVertexAttribDivisor(5, 1);
+            glVertexAttribDivisor(6, 1);
+            glVertexAttribDivisor(7, 1);
 
         }
     }
