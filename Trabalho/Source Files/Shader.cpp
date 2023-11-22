@@ -37,6 +37,18 @@ void Shader::SendUniformData(const std::string& variableName, const glm::mat4& d
 	glUniformMatrix4fv(Id, 1, GL_FALSE, glm::value_ptr(data));
 }
 
+void Shader::SendUniformLight(const std::string& variableName, glm::vec4& data)
+{
+	int Id = GetUniformLocation(variableName);
+	glUniform4f(Id,data.x,data.y,data.z,data.w);
+}
+
+void Shader::SendUniformLightPos(const std::string& variableName, glm::vec3& data)
+{
+	int Id = GetUniformLocation(variableName);
+	glUniform3f(Id,data.x,data.y,data.z);
+}
+
 void Shader::CreateShaders()
 {
 	_programId = glCreateProgram();

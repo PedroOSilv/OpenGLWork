@@ -16,6 +16,8 @@ public:
 	void Unbind() const;
 
 	void SendUniformData(const std::string& variableName, const glm::mat4& data);
+	void SendUniformLight(const std::string& variableName,glm::vec4& data);
+	void SendUniformLightPos(const std::string& variableName, glm::vec3& data);
 
 private:
 	unsigned int _programId;
