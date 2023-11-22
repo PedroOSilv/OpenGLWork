@@ -255,7 +255,7 @@ int main()
                 {
                     octagonModels[i] = glm::rotate(octagonAngSpeed[i].x * dt, glm::vec3(1.f, 0.f, 0.f));
                     octagonModels[i] = glm::rotate(octagonModels[i], octagonAngSpeed[i].y * dt, glm::vec3(0.f, 1.f, 0.f));
-                    octagonModels[i] = octagonsPosMatrix[i] * glm::rotate(octagonModels[i], pyramidAngSpeed[i].z * dt, glm::vec3(0.f, 0.f, 1.f));
+                    octagonModels[i] = octagonsPosMatrix[i] * glm::rotate(octagonModels[i], octagonAngSpeed[i].z * dt, glm::vec3(0.f, 0.f, 1.f));
                 }
 
                 // Update Matrix Buffer
